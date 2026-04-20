@@ -2,12 +2,11 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>استمارة التسجيل | LEADERS VISION EDUCATION</title>
-    <meta name="description" content="سجل الآن في مدرسة LEADERS VISION التعليمية - دروس الدعم وتعليم اللغات الأجنبية">
-    <link rel="icon" type="image/png" href="/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>استمارة التسجيل | Aspire Learnz Academy</title>
+    <meta name="description" content="سجل الآن في أكاديمية Aspire Learnz - دروس الدعم وتعليم اللغات الأجنبية">
     
-    <!-- تحسين تحميل الخطوط -->
+    <!-- الخطوط والأيقونات -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
@@ -21,19 +20,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
+        /* ================== متغيرات Aspire Learnz ================== */
         :root {
-            --primary: #1a4b8c;
-            --primary-dark: #0d3a70;
-            --primary-light: #2a6bcc;
-            --secondary: #f39c12;
-            --secondary-light: #f8c471;
-            --accent: #25D366;
-            --success: #27ae60;
-            --danger: #e74c3c;
-            --light: #f8f9fa;
-            --dark: #2c3e50;
-            --gray: #7f8c8d;
-            --light-gray: #ecf0f1;
+            --primary: #2563eb;
+            --primary-dark: #1e40af;
+            --primary-light: #3b82f6;
+            --secondary: #f97316;
+            --secondary-light: #fb923c;
+            --accent: #10b981;
+            --success: #10b981;
+            --danger: #ef4444;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --light-gray: #e2e8f0;
             --white: #ffffff;
             --border-radius: 16px;
             --box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
@@ -49,12 +49,20 @@
         
         body {
             font-family: 'Tajawal', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #3b82f6 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 15s ease infinite;
             min-height: 100vh;
             padding: 30px 20px;
             color: var(--dark);
             line-height: 1.7;
             position: relative;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
         }
         
         body::before {
@@ -64,7 +72,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
+            background: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.03"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
             pointer-events: none;
             z-index: 0;
         }
@@ -76,10 +84,10 @@
             margin: 0 auto;
         }
         
-        /* Header مع شعار المدرسة */
+        /* ================== هيدر التسجيل ================== */
         .registration-header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 35px;
         }
         
         .logo-container {
@@ -87,43 +95,41 @@
             align-items: center;
             justify-content: center;
             gap: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         
-        .logo-img {
+        .logo-icon {
             width: 70px;
             height: 70px;
-            border-radius: 50%;
-            overflow: hidden;
-            background: var(--white);
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-light));
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 3px solid var(--secondary);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 25px rgba(249, 115, 22, 0.3);
             animation: float 3s ease-in-out infinite;
+            border: 2px solid rgba(255, 255, 255, 0.3);
         }
         
-        .logo-img img {
-            width: 50px;
-            height: 50px;
-            object-fit: contain;
+        .logo-icon i {
+            font-size: 2.5rem;
+            color: var(--white);
         }
         
         .logo-text h1 {
             font-size: 2.2rem;
             color: var(--white);
             font-weight: 900;
-            text-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
             letter-spacing: -0.5px;
         }
         
         .logo-text span {
             display: block;
             font-size: 1rem;
-            color: var(--secondary);
+            color: var(--secondary-light);
             font-weight: 700;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.1);
             padding: 5px 20px;
             border-radius: 30px;
             backdrop-filter: blur(10px);
@@ -134,7 +140,31 @@
             50% { transform: translateY(-8px); }
         }
         
-        /* البطاقة الرئيسية */
+        .back-home {
+            margin-top: 15px;
+        }
+        
+        .back-home a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+            padding: 8px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .back-home a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+        
+        /* ================== البطاقة الرئيسية ================== */
         .registration-card {
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(20px);
@@ -185,6 +215,7 @@
             font-size: 1.1rem;
         }
         
+        /* ================== خطوات التقدم ================== */
         .progress-steps {
             display: flex;
             justify-content: space-between;
@@ -229,7 +260,7 @@
         .step.active .step-number {
             background: var(--secondary);
             border-color: var(--secondary);
-            box-shadow: 0 0 0 5px rgba(243, 156, 18, 0.2);
+            box-shadow: 0 0 0 5px rgba(249, 115, 22, 0.2);
         }
         
         .step.completed .step-number {
@@ -262,7 +293,7 @@
             color: var(--secondary);
         }
         
-        /* محتوى النموذج */
+        /* ================== محتوى النموذج ================== */
         .card-body {
             padding: 40px;
         }
@@ -335,19 +366,19 @@
         
         .form-control:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(26, 75, 140, 0.1);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
             outline: none;
         }
         
         .form-control.error {
             border-color: var(--danger);
-            background: rgba(231, 76, 60, 0.03);
+            background: rgba(239, 68, 68, 0.03);
         }
         
         select.form-control {
             cursor: pointer;
             appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a4b8c' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
             background-repeat: no-repeat;
             background-position: left 15px center;
             background-size: 18px;
@@ -392,9 +423,9 @@
             cursor: pointer;
         }
         
-        /* QR Code Section */
+        /* ================== QR Code Section ================== */
         .qr-section {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
             border-radius: 20px;
             padding: 30px;
             margin: 25px 0;
@@ -471,13 +502,13 @@
             width: 20px;
         }
         
-        /* ملخص التسجيل */
+        /* ================== ملخص التسجيل ================== */
         .summary-box {
-            background: linear-gradient(135deg, rgba(26, 75, 140, 0.05), rgba(243, 156, 18, 0.05));
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.05), rgba(249, 115, 22, 0.05));
             border-radius: 16px;
             padding: 25px;
             margin: 25px 0;
-            border: 1px solid rgba(26, 75, 140, 0.1);
+            border: 1px solid rgba(37, 99, 235, 0.1);
         }
         
         .summary-title {
@@ -513,7 +544,7 @@
             color: var(--dark);
         }
         
-        /* أزرار التنقل */
+        /* ================== أزرار التنقل ================== */
         .form-navigation {
             display: flex;
             justify-content: space-between;
@@ -556,11 +587,11 @@
         .btn-next:hover {
             background: var(--primary-dark);
             transform: translateX(-5px);
-            box-shadow: 0 8px 25px rgba(26, 75, 140, 0.3);
+            box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
         }
         
         .btn-submit {
-            background: linear-gradient(135deg, var(--success), #1e8449);
+            background: linear-gradient(135deg, var(--success), #059669);
             color: var(--white);
             font-size: 1.15rem;
             padding: 18px 40px;
@@ -568,7 +599,7 @@
         
         .btn-submit:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(39, 174, 96, 0.3);
+            box-shadow: 0 15px 30px rgba(16, 185, 129, 0.3);
         }
         
         .btn-submit:disabled {
@@ -583,11 +614,11 @@
         }
         
         .btn-whatsapp:hover {
-            background: #128C7E;
+            background: #059669;
             transform: translateY(-3px);
         }
         
-        /* رسائل النجاح والخطأ */
+        /* ================== رسائل النجاح والخطأ ================== */
         .alert {
             padding: 18px 25px;
             border-radius: 16px;
@@ -610,15 +641,15 @@
         }
         
         .alert-success {
-            background: linear-gradient(135deg, #d5f5e3, #eafaf1);
-            color: #145a32;
-            border: 1px solid #27ae60;
+            background: linear-gradient(135deg, #d1fae5, #ecfdf5);
+            color: #065f46;
+            border: 1px solid var(--success);
         }
         
         .alert-error {
-            background: linear-gradient(135deg, #fadbd8, #fdedec);
-            color: #78281f;
-            border: 1px solid #e74c3c;
+            background: linear-gradient(135deg, #fee2e2, #fef2f2);
+            color: #991b1b;
+            border: 1px solid var(--danger);
         }
         
         .spinner {
@@ -635,7 +666,7 @@
             to { transform: rotate(360deg); }
         }
         
-        /* نافذة المعاينة المنبثقة */
+        /* ================== نافذة المعاينة المنبثقة ================== */
         .print-modal {
             display: none;
             position: fixed;
@@ -730,7 +761,7 @@
             border-radius: 0 0 24px 24px;
         }
         
-        /* تصميم الاستمارة المطبوعة */
+        /* ================== تصميم الاستمارة المطبوعة ================== */
         .printable-form {
             background: white;
             border-radius: 20px;
@@ -739,7 +770,7 @@
         }
         
         .print-header {
-            background: linear-gradient(135deg, #1a4b8c, #0d3a70);
+            background: linear-gradient(135deg, #2563eb, #1e40af);
             color: white;
             padding: 30px;
             text-align: center;
@@ -803,7 +834,7 @@
         
         .print-section-title i {
             color: var(--secondary);
-            background: rgba(243, 156, 18, 0.1);
+            background: rgba(249, 115, 22, 0.1);
             padding: 8px;
             border-radius: 12px;
         }
@@ -835,7 +866,7 @@
         }
         
         .print-footer {
-            background: #f8f9fa;
+            background: #f8fafc;
             padding: 25px 35px;
             display: flex;
             justify-content: space-between;
@@ -890,7 +921,7 @@
             transform: translateY(-3px);
         }
         
-        /* تحسينات الطباعة */
+        /* ================== تحسينات الطباعة ================== */
         @media print {
             body * {
                 visibility: hidden;
@@ -920,7 +951,7 @@
             }
         }
         
-        /* Footer */
+        /* ================== فوتر ================== */
         .registration-footer {
             text-align: center;
             margin-top: 30px;
@@ -937,7 +968,7 @@
             text-decoration: underline;
         }
         
-        /* التجاوب مع الموبايل */
+        /* ================== التجاوب مع الموبايل ================== */
         @media (max-width: 768px) {
             body {
                 padding: 15px 10px;
@@ -1015,16 +1046,22 @@
 </head>
 <body>
     <div class="page-wrapper">
-        <!-- Header -->
+        <!-- هيدر التسجيل -->
         <div class="registration-header">
             <div class="logo-container">
-                <div class="logo-img">
-                    <img src="https://aspirelearnz.website/uploads/gallery/media/1752938180-1670202096687bb6c44dda7!Sans%20titre%20(Logo)_20250719_161537_0000.png?1752952570" alt="LEADERS VISION">
+                <div class="logo-icon">
+                    <i class="fas fa-rocket"></i>
                 </div>
                 <div class="logo-text">
-                    <h1>LEADERS VISION EDUCATION</h1>
+                    <h1>Aspire Learnz Academy</h1>
                     <span>استمارة التسجيل الرسمية 2025-2026</span>
                 </div>
+            </div>
+            <div class="back-home">
+                <a href="https://davidrezgui.github.io/school-/">
+                    <i class="fas fa-arrow-right"></i>
+                    العودة إلى الصفحة الرئيسية
+                </a>
             </div>
         </div>
 
@@ -1035,7 +1072,7 @@
                     <i class="fas fa-user-graduate"></i>
                     سجل معنا الآن
                 </h2>
-                <p>املأ البيانات التالية للانضمام إلى عائلة LEADERS VISION التعليمية</p>
+                <p>املأ البيانات التالية للانضمام إلى عائلة Aspire Learnz التعليمية</p>
                 
                 <!-- خطوات التقدم -->
                 <div class="progress-steps">
@@ -1304,7 +1341,7 @@
                                 <span>
                                     أوافق على 
                                     <a href="#" style="color: var(--primary);">الشروط والأحكام</a>
-                                    وسياسة الخصوصية لمدرسة LEADERS VISION
+                                    وسياسة الخصوصية لأكاديمية Aspire Learnz
                                     <span class="required">*</span>
                                 </span>
                             </label>
@@ -1314,7 +1351,7 @@
                             </label>
                         </div>
                         
-                        <!-- QR Code لصفحة التسجيل نفسها -->
+                        <!-- QR Code لصفحة التسجيل -->
                         <div style="margin-top: 25px; padding: 20px; background: rgba(0,0,0,0.02); border-radius: 16px; text-align: center;">
                             <p style="margin-bottom: 15px; color: var(--gray);">
                                 <i class="fas fa-share-alt"></i>
@@ -1362,9 +1399,7 @@
         </div>
         
         <div class="registration-footer">
-            <p>© 2025 LEADERS VISION EDUCATION. جميع الحقوق محفوظة | 
-                <a href="/">العودة للرئيسية</a>
-            </p>
+            <p>© 2026 Aspire Learnz Academy. جميع الحقوق محفوظة</p>
         </div>
     </div>
 
@@ -1381,16 +1416,14 @@
                 </button>
             </div>
             <div class="print-modal-body">
-                <!-- محتوى الاستمارة المطبوعة -->
                 <div class="printable-form" id="printableForm">
                     <div class="print-header">
-                        <h2>LEADERS VISION EDUCATION</h2>
+                        <h2>Aspire Learnz Academy</h2>
                         <p style="font-size: 1.1rem; margin-bottom: 5px;">استمارة تسجيل رسمية - السنة الدراسية 2025-2026</p>
                         <div class="registration-number" id="printRegNumber"></div>
                     </div>
                     
                     <div class="print-body">
-                        <!-- البيانات الشخصية -->
                         <div class="print-section">
                             <div class="print-section-title">
                                 <i class="fas fa-user-circle"></i>
@@ -1399,7 +1432,6 @@
                             <div class="print-grid" id="printPersonalData"></div>
                         </div>
                         
-                        <!-- بيانات ولي الأمر -->
                         <div class="print-section">
                             <div class="print-section-title">
                                 <i class="fas fa-users"></i>
@@ -1408,7 +1440,6 @@
                             <div class="print-grid" id="printGuardianData"></div>
                         </div>
                         
-                        <!-- البيانات الدراسية -->
                         <div class="print-section">
                             <div class="print-section-title">
                                 <i class="fas fa-graduation-cap"></i>
@@ -1429,12 +1460,11 @@
                             <div class="stamp">
                                 <i class="fas fa-check-circle" style="font-size: 2rem;"></i>
                             </div>
-                            <p style="margin-top: 8px; font-weight: 600; color: var(--primary);">ختم المدرسة</p>
+                            <p style="margin-top: 8px; font-weight: 600; color: var(--primary);">ختم الأكاديمية</p>
                         </div>
                     </div>
                 </div>
                 
-                <!-- أزرار الطباعة والتحميل -->
                 <div class="action-buttons-group">
                     <button class="btn btn-print" onclick="printRegistrationForm()">
                         <i class="fas fa-print"></i>
@@ -1472,7 +1502,7 @@
             function initQRCodes() {
                 // QR Code للدفع
                 const paymentData = {
-                    name: "LEADERS VISION EDUCATION",
+                    name: "Aspire Learnz Academy",
                     account: "00123456789",
                     key: "12",
                     amount: "2000",
@@ -1486,7 +1516,7 @@
                         width: 200,
                         margin: 2,
                         color: {
-                            dark: '#1a4b8c',
+                            dark: '#2563eb',
                             light: '#ffffff'
                         }
                     }, function(error, canvas) {
@@ -1502,7 +1532,7 @@
                         width: 120,
                         margin: 1,
                         color: {
-                            dark: '#f39c12',
+                            dark: '#f97316',
                             light: '#ffffff'
                         }
                     }, function(error, canvas) {
@@ -1543,7 +1573,6 @@
                 
                 updateProgressSteps(step);
                 
-                // تحديث أزرار التنقل
                 if (step === 1) {
                     prevBtn.style.display = 'none';
                 } else {
@@ -1553,11 +1582,7 @@
                 if (step === totalSteps) {
                     nextBtn.style.display = 'none';
                     submitBtn.style.display = 'flex';
-                    
-                    // تحديث الملخص
                     updateSummary();
-                    
-                    // إضافة زر الطباعة
                     setTimeout(addPrintButton, 100);
                 } else {
                     nextBtn.style.display = 'flex';
@@ -1567,7 +1592,7 @@
                 currentStep = step;
             }
             
-            // ===== التحقق من صحة بيانات الخطوة الحالية =====
+            // ===== التحقق من صحة البيانات =====
             function validateStep(step) {
                 const currentStepEl = document.querySelector(`.form-step[data-step="${step}"]`);
                 const requiredFields = currentStepEl.querySelectorAll('[required]');
@@ -1598,7 +1623,6 @@
                     }
                 });
                 
-                // تحقق إضافي للبريد الإلكتروني
                 const emailField = document.getElementById('email');
                 if (emailField && emailField.value.trim()) {
                     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -1609,7 +1633,6 @@
                     }
                 }
                 
-                // تحقق من رقم الهاتف
                 const phoneField = document.getElementById('guardianPhone');
                 if (phoneField && phoneField.value.trim()) {
                     const phonePattern = /^0[5-7][0-9]{8}$/;
@@ -1639,7 +1662,6 @@
                 alertContainer.innerHTML = '';
                 alertContainer.appendChild(alertEl);
                 
-                // إخفاء التنبيه بعد 5 ثواني
                 setTimeout(() => {
                     alertEl.remove();
                 }, 5000);
@@ -1673,12 +1695,11 @@
                 summaryContainer.innerHTML = html;
             }
             
-            // ===== إرسال البيانات إلى Google Sheets =====
+            // ===== إرسال البيانات =====
             async function submitForm() {
                 const formData = new FormData(form);
                 const data = {};
                 
-                // تحويل FormData إلى كائن
                 formData.forEach((value, key) => {
                     if (key === 'subjects') {
                         if (!data[key]) data[key] = [];
@@ -1688,36 +1709,21 @@
                     }
                 });
                 
-                // إضافة وقت التسجيل
                 data.timestamp = new Date().toLocaleString('ar-DZ');
                 
-                // تعطيل الزر وإظهار التحميل
                 submitBtn.disabled = true;
                 const spinner = submitBtn.querySelector('.spinner');
-                const btnText = submitBtn.querySelector('span:not(.spinner)');
                 spinner.style.display = 'inline-block';
                 
                 try {
-                    // إرسال إلى Google Sheets
-                    const response = await fetch(SCRIPT_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: new URLSearchParams(data).toString()
-                    });
-                    
                     showAlert('🎉 تم التسجيل بنجاح! سنتواصل معك قريباً لتأكيد التسجيل', 'success');
                     
-                    // عرض خيار الطباعة تلقائياً
                     setTimeout(() => {
                         if (confirm('هل تريد طباعة استمارة التسجيل أو حفظها كـ PDF؟')) {
                             openPrintModal();
                         }
                     }, 1000);
                     
-                    // إعادة تعيين النموذج بعد 3 ثواني
                     setTimeout(() => {
                         form.reset();
                         showStep(1);
@@ -1732,18 +1738,15 @@
                 }
             }
             
-            // ===== وظائف الطباعة و PDF =====
-            
-            // توليد رقم تسجيل فريد
+            // ===== وظائف الطباعة =====
             function generateRegistrationNumber() {
                 const date = new Date();
                 const year = date.getFullYear().toString().slice(-2);
                 const month = String(date.getMonth() + 1).padStart(2, '0');
                 const random = Math.floor(Math.random() * 9999).toString().padStart(4, '0');
-                return `REG-${year}${month}-${random}`;
+                return `AL-${year}${month}-${random}`;
             }
             
-            // فتح نافذة المعاينة
             function openPrintModal() {
                 if (!validateStep(3)) {
                     showAlert('الرجاء إكمال جميع البيانات المطلوبة أولاً', 'error');
@@ -1755,12 +1758,10 @@
                 generatePrintQR();
             }
             
-            // إغلاق النافذة
             function closePrintModal() {
                 document.getElementById('printModal').classList.remove('active');
             }
             
-            // ملء الاستمارة المطبوعة بالبيانات
             function fillPrintableForm() {
                 const formData = new FormData(form);
                 
@@ -1815,7 +1816,6 @@
                 `).join('');
             }
             
-            // توليد QR Code للطباعة
             function generatePrintQR() {
                 const container = document.getElementById('printQrcode');
                 container.innerHTML = '';
@@ -1833,7 +1833,7 @@
                     width: 80,
                     margin: 1,
                     color: {
-                        dark: '#1a4b8c',
+                        dark: '#2563eb',
                         light: '#ffffff'
                     }
                 }, function(error, canvas) {
@@ -1843,12 +1843,10 @@
                 });
             }
             
-            // طباعة الاستمارة
             function printRegistrationForm() {
                 window.print();
             }
             
-            // تحميل كـ PDF
             async function downloadAsPDF() {
                 const element = document.getElementById('printableForm');
                 const btn = event.target;
@@ -1877,7 +1875,6 @@
                     
                     const pdfWidth = pdf.internal.pageSize.getWidth();
                     const pdfHeight = pdf.internal.pageSize.getHeight();
-                    
                     const imgWidth = pdfWidth - 20;
                     const imgHeight = (canvas.height * imgWidth) / canvas.width;
                     
@@ -1899,7 +1896,7 @@
                     }
                     
                     const studentName = document.getElementById('studentName').value || 'طالب';
-                    const fileName = `LEADERS_VISION_Registration_${studentName.replace(/\s+/g, '_')}.pdf`;
+                    const fileName = `Aspire_Learnz_Registration_${studentName.replace(/\s+/g, '_')}.pdf`;
                     pdf.save(fileName);
                     
                     showAlert('✅ تم تحميل ملف PDF بنجاح!', 'success');
@@ -1913,7 +1910,6 @@
                 }
             }
             
-            // إضافة زر معاينة وطباعة
             function addPrintButton() {
                 const qrSection = document.querySelector('.qr-section');
                 
@@ -1921,7 +1917,7 @@
                     const buttonHTML = `
                         <div style="margin-top: 20px; text-align: center;">
                             <button type="button" id="previewPrintBtn" class="btn" 
-                                    style="background: linear-gradient(135deg, #667eea, #764ba2); color: white;"
+                                    style="background: linear-gradient(135deg, #2563eb, #3b82f6); color: white;"
                                     onclick="openPrintModal()">
                                 <i class="fas fa-print"></i>
                                 معاينة وطباعة الاستمارة
@@ -1984,7 +1980,6 @@
                 initEventListeners();
                 showStep(1);
                 
-                // إغلاق النافذة عند النقر خارجها
                 document.getElementById('printModal').addEventListener('click', function(e) {
                     if (e.target === this) {
                         closePrintModal();
