@@ -9,9 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- مكتبة Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
     <style>
         :root {
             --primary: #2E7D32; --primary-dark: #1B5E20; --primary-light: #4CAF50;
@@ -23,16 +20,13 @@
             --shadow: 0 4px 16px rgba(0,0,0,0.08);
             --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1.2);
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: 'Cairo', sans-serif;
             background: #0a1a0a; min-height: 100vh;
             color: var(--text-dark); overflow-x: hidden;
             position: relative; display: flex; flex-direction: column;
         }
-
         .particles-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 0; overflow: hidden;
@@ -58,7 +52,6 @@
             33% { transform: translate(25px,-25px) scale(1.1); }
             66% { transform: translate(-15px,15px) scale(0.9); }
         }
-
         .top-nav {
             position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
             background: rgba(10,31,10,0.85); backdrop-filter: blur(25px);
@@ -84,7 +77,6 @@
         }
         .step-dot.done { background: var(--primary-light); box-shadow: 0 0 8px rgba(76,175,80,0.5); }
         .step-dot.active { background: var(--primary); box-shadow: 0 0 0 4px rgba(76,175,80,0.2); }
-
         .main-container {
             position: relative; z-index: 1; flex: 1;
             padding: 78px 16px 20px; max-width: 500px; margin: 0 auto; width: 100%;
@@ -98,10 +90,7 @@
             height: 100%; background: linear-gradient(90deg, var(--primary), var(--primary-light));
             border-radius: 4px; transition: width 0.5s ease; width: 0%;
         }
-        .progress-text {
-            font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 5px; text-align: left; direction: ltr;
-        }
-
+        .progress-text { font-size: 10px; color: rgba(255,255,255,0.4); margin-top: 5px; text-align: left; direction: ltr; }
         .card {
             background: rgba(255,255,255,0.94);
             backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
@@ -111,26 +100,14 @@
             animation: cardIn 0.5s ease both;
             position: relative; overflow: hidden;
         }
-        .card.done::after {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
-            background: linear-gradient(90deg, var(--primary-light), #FFA726, var(--primary-light));
-            background-size: 200% 100%; animation: shimmer 2s ease infinite;
-        }
-        .card::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; opacity: 0; transition: opacity 0.4s; }
-        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
         @keyframes cardIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
         .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
-        .card-icon {
-            width: 36px; height: 36px; border-radius: 10px;
-            display: flex; align-items: center; justify-content: center; font-size: 17px;
-        }
+        .card-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 17px; }
         .ci-cam { background: #FFF3E0; } .ci-type { background: #E8F5E9; } .ci-loc { background: #E3F2FD; }
         .card-label { flex: 1; font-size: 14px; font-weight: 700; color: var(--text-dark); }
         .tag { font-size: 10px; padding: 4px 10px; border-radius: 12px; font-weight: 700; }
         .tag-req { background: #FFF3E0; color: var(--accent); }
         .tag-ok { background: #E8F5E9; color: var(--primary); }
-
         .cam-zone {
             width: 100%; aspect-ratio: 4/3; border-radius: var(--radius-sm);
             background: linear-gradient(145deg, #1a1a2e, #121828);
@@ -138,22 +115,15 @@
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; transition: var(--transition); position: relative; overflow: hidden;
         }
-        .cam-zone:hover { border-color: rgba(255,255,255,0.4); }
         .cam-zone.filled { border: 2.5px solid var(--primary-light); border-style: solid; cursor: default; }
         .cam-inner { text-align: center; color: rgba(255,255,255,0.7); pointer-events: none; }
         .cam-emoji { font-size: 42px; display: block; margin-bottom: 4px; animation: float 3s ease-in-out infinite; }
         @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         .cam-text { font-size: 13px; font-weight: 700; }
         .cam-hint { font-size: 10px; opacity: 0.5; margin-top: 2px; }
-        .flash {
-            position: absolute; top:0;left:0;width:100%;height:100%;
-            background:white;opacity:0;z-index:5;pointer-events:none;transition:opacity 0.05s;
-        }
+        .flash { position: absolute; top:0;left:0;width:100%;height:100%;background:white;opacity:0;z-index:5;pointer-events:none;transition:opacity 0.05s; }
         .flash.fire { opacity: 0.85; }
-        #preview {
-            width:100%;height:100%;object-fit:cover;
-            display:none;position:absolute;top:0;left:0;z-index:2;
-        }
+        #preview { width:100%;height:100%;object-fit:cover;display:none;position:absolute;top:0;left:0;z-index:2; }
         .cam-btns { display: flex; gap: 8px; margin-top: 8px; }
         .btn-gallery {
             flex: 1; padding: 10px; border-radius: 20px;
@@ -162,7 +132,6 @@
             font-size: 12px; font-weight: 600; transition: var(--transition);
             display: flex; align-items: center; justify-content: center; gap: 5px;
         }
-        .btn-gallery:hover { background: #f9f9f9; border-color: #ccc; }
         .btn-delete {
             padding: 10px 16px; border-radius: 20px;
             border: 1.5px solid #FFCDD2; background: white; color: var(--danger);
@@ -170,21 +139,13 @@
             font-size: 12px; font-weight: 600; transition: var(--transition);
             display: none; align-items: center; justify-content: center; gap: 5px;
         }
-        .btn-delete:hover { background: #FFF5F5; }
-
         .type-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
         .type-item {
             padding: 12px 4px; border: 2px solid rgba(0,0,0,0.06);
             border-radius: var(--radius-sm); text-align: center;
             cursor: pointer; transition: var(--transition); background: white; position: relative;
         }
-        .type-item:hover { border-color: #ccc; transform: translateY(-2px); box-shadow: var(--shadow); }
-        .type-item.selected {
-            border-color: var(--primary); background: #E8F5E9;
-            box-shadow: 0 0 0 4px rgba(76,175,80,0.08);
-            animation: pop 0.35s ease;
-        }
-        @keyframes pop { 0% { transform: scale(1); } 40% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        .type-item.selected { border-color: var(--primary); background: #E8F5E9; }
         .type-check {
             position: absolute; top: 5px; right: 5px; width: 17px; height: 17px;
             background: var(--primary); color: white; border-radius: 50%;
@@ -193,12 +154,7 @@
         .type-item.selected .type-check { display: flex; }
         .type-emoji { font-size: 26px; display: block; margin-bottom: 3px; }
         .type-name { font-size: 11px; font-weight: 700; color: var(--text-dark); }
-
-        .map-box {
-            width: 100%; height: 180px; border-radius: var(--radius-sm);
-            border: 2.5px solid rgba(0,0,0,0.06); overflow: hidden;
-            transition: var(--transition);
-        }
+        .map-box { width: 100%; height: 180px; border-radius: var(--radius-sm); border: 2.5px solid rgba(0,0,0,0.06); overflow: hidden; }
         .map-box.located { border-color: var(--primary-light); }
         .map-inner {
             width: 100%; height: 100%; display: flex; flex-direction: column;
@@ -206,17 +162,11 @@
             background: linear-gradient(135deg, #E3F2FD, #F5F5F5);
             transition: var(--transition); cursor: pointer;
         }
-        .map-inner:hover { background: linear-gradient(135deg, #BBDEFB, #EEEEEE); }
         .map-emoji { font-size: 36px; margin-bottom: 4px; animation: bounce 2s ease-in-out infinite; }
         @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-        .coords {
-            display: none; gap: 8px; margin-top: 8px; font-size: 11px; font-weight: 600;
-            color: var(--text-gray); background: rgba(0,0,0,0.02);
-            padding: 8px 12px; border-radius: 16px; justify-content: center;
-        }
+        .coords { display: none; gap: 8px; margin-top: 8px; font-size: 11px; font-weight: 600; color: var(--text-gray); background: rgba(0,0,0,0.02); padding: 8px 12px; border-radius: 16px; justify-content: center; }
         .coords.show { display: flex; }
         .coord-val { color: var(--primary-dark); font-weight: 800; direction: ltr; display: inline-block; }
-
         .submit-btn {
             width: 100%; padding: 15px; border: none; border-radius: var(--radius-sm);
             font-size: 15px; font-weight: 800; cursor: pointer; transition: var(--transition);
@@ -230,48 +180,17 @@
             box-shadow: 0 8px 30px rgba(46,125,50,0.4); opacity: 1; pointer-events: auto;
             border: none; animation: glow 2.5s ease-in-out infinite;
         }
-        @keyframes glow {
-            0%,100% { box-shadow: 0 8px 30px rgba(46,125,50,0.4); }
-            50% { box-shadow: 0 14px 40px rgba(46,125,50,0.6); }
-        }
-        .submit-btn.ready:hover { transform: translateY(-2px); }
-        .submit-btn.ready:active { transform: scale(0.96); }
-
-        .overlay {
-            position: fixed; top:0;left:0;width:100%;height:100%;
-            background: rgba(0,0,0,0.6); backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px); z-index: 2000;
-            display: none; align-items: center; justify-content: center; padding: 20px;
-        }
+        @keyframes glow { 0%,100% { box-shadow: 0 8px 30px rgba(46,125,50,0.4); } 50% { box-shadow: 0 14px 40px rgba(46,125,50,0.6); } }
+        .overlay { position: fixed; top:0;left:0;width:100%;height:100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; }
         .overlay.show { display: flex; }
-        .modal {
-            background: white; border-radius: var(--radius); padding: 34px 22px 26px;
-            text-align: center; max-width: 360px; width: 100%;
-            animation: spring 0.6s ease; box-shadow: var(--shadow-xl);
-        }
-        @keyframes spring {
-            0% { transform: scale(0.6) translateY(40px); opacity: 0; }
-            55% { transform: scale(1.03) translateY(-4px); opacity: 1; }
-            100% { transform: scale(1) translateY(0); }
-        }
+        .modal { background: white; border-radius: var(--radius); padding: 34px 22px 26px; text-align: center; max-width: 360px; width: 100%; animation: spring 0.6s ease; box-shadow: var(--shadow-xl); }
+        @keyframes spring { 0% { transform: scale(0.6) translateY(40px); opacity: 0; } 55% { transform: scale(1.03) translateY(-4px); opacity: 1; } 100% { transform: scale(1) translateY(0); } }
         .modal-icon { font-size: 70px; animation: popIcon 0.7s ease; }
         @keyframes popIcon { 0%{transform:scale(0) rotate(-30deg);} 60%{transform:scale(1.2) rotate(5deg);} 100%{transform:scale(1) rotate(0);} }
         .modal-title { font-size: 20px; font-weight: 900; color: var(--primary-dark); margin: 8px 0; }
         .modal-desc { font-size: 13px; color: var(--text-gray); line-height: 1.7; margin-bottom: 20px; }
-        .modal-btn {
-            padding: 12px 30px; border: none; border-radius: 25px;
-            background: var(--primary); color: white; font-size: 14px; font-weight: 700;
-            cursor: pointer; font-family: 'Cairo', sans-serif; transition: var(--transition);
-            box-shadow: 0 6px 20px rgba(46,125,50,0.3);
-        }
-        .modal-btn:hover { background: var(--primary-dark); }
-
-        .footer {
-            position: relative; z-index: 1; text-align: center;
-            padding: 8px 20px; font-size: 9px;
-            color: rgba(255,255,255,0.45);
-            background: linear-gradient(transparent, rgba(0,0,0,0.3));
-        }
+        .modal-btn { padding: 12px 30px; border: none; border-radius: 25px; background: var(--primary); color: white; font-size: 14px; font-weight: 700; cursor: pointer; font-family: 'Cairo', sans-serif; }
+        .footer { position: relative; z-index: 1; text-align: center; padding: 8px 20px; font-size: 9px; color: rgba(255,255,255,0.45); background: linear-gradient(transparent, rgba(0,0,0,0.3)); }
     </style>
 </head>
 <body>
@@ -291,43 +210,30 @@
     </header>
 
     <main class="main-container">
-        
         <div class="progress-bar-wrap">
             <div class="progress-bar"><div class="progress-fill" id="pFill"></div></div>
             <div class="progress-text" id="pText">0 من 3 خطوات</div>
         </div>
 
-        <div class="card" id="c1" style="animation-delay:0.05s">
+        <div class="card" id="c1">
             <div class="card-header">
-                <div class="card-icon ci-cam">📷</div>
-                <span class="card-label">التقط صورة للمفرغة</span>
-                <span class="tag tag-req" id="t1">مطلوب</span>
+                <div class="card-icon ci-cam">📷</div><span class="card-label">التقط صورة للمفرغة</span><span class="tag tag-req" id="t1">مطلوب</span>
             </div>
-            
             <div class="cam-zone" id="camZone" onclick="takePicture()">
-                <div class="flash" id="flash"></div>
-                <img id="preview" alt="معاينة">
-                <div class="cam-inner" id="camInner">
-                    <span class="cam-emoji">📸</span>
-                    <span class="cam-text">اضغط لفتح الكاميرا</span>
-                    <span class="cam-hint">التقط صورة للمفرغة</span>
-                </div>
+                <div class="flash" id="flash"></div><img id="preview" alt="معاينة">
+                <div class="cam-inner" id="camInner"><span class="cam-emoji">📸</span><span class="cam-text">اضغط لفتح الكاميرا</span><span class="cam-hint">التقط صورة للمفرغة</span></div>
             </div>
-            
             <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none" onchange="handlePhoto(event)">
             <input type="file" id="galleryInput" accept="image/*" style="display:none" onchange="handlePhoto(event)">
-            
             <div class="cam-btns">
                 <button class="btn-gallery" id="btnGallery" onclick="openGallery()">🖼️ اختر من المعرض</button>
                 <button class="btn-delete" id="btnDelete" onclick="deletePhoto()">🗑️ حذف الصورة</button>
             </div>
         </div>
 
-        <div class="card" id="c2" style="animation-delay:0.1s">
+        <div class="card" id="c2">
             <div class="card-header">
-                <div class="card-icon ci-type">🏷️</div>
-                <span class="card-label">اختر نوع النفايات</span>
-                <span class="tag tag-req" id="t2">مطلوب</span>
+                <div class="card-icon ci-type">🏷️</div><span class="card-label">اختر نوع النفايات</span><span class="tag tag-req" id="t2">مطلوب</span>
             </div>
             <div class="type-grid">
                 <div class="type-item" onclick="pickType(this,'menagere')"><span class="type-check">✓</span><span class="type-emoji">🗑️</span><span class="type-name">نفايات منزلية</span></div>
@@ -339,17 +245,15 @@
             </div>
         </div>
 
-        <div class="card" id="c3" style="animation-delay:0.15s">
+        <div class="card" id="c3">
             <div class="card-header">
-                <div class="card-icon ci-loc">📍</div>
-                <span class="card-label">تأكيد الموقع الجغرافي</span>
-                <span class="tag tag-req" id="t3">مطلوب</span>
+                <div class="card-icon ci-loc">📍</div><span class="card-label">تأكيد الموقع الجغرافي</span><span class="tag tag-req" id="t3">مطلوب</span>
             </div>
             <div class="map-box" id="mapBox">
                 <div class="map-inner" id="mapInner" onclick="getLocation()">
                     <span class="map-emoji">📍</span>
                     <span style="font-weight:700;font-size:13px;color:#616161;">اضغط لتحديد موقعك</span>
-                    <span style="font-size:10px;color:#9e9e9e;margin-top:2px;">سيظهر طلب الإذن تلقائياً</span>
+                    <span style="font-size:10px;color:#9e9e9e;">سيظهر طلب الإذن تلقائياً</span>
                 </div>
             </div>
             <div class="coords" id="coords">✅ تم التحديد — <span class="coord-val" id="vLat">--</span>, <span class="coord-val" id="vLng">--</span></div>
@@ -370,188 +274,127 @@
     </div>
 
     <script>
-        // ============ Supabase (جاهز عند تحميل الصفحة) ============
-        const supabase = window.supabase.createClient(
-            'https://ctkkkpcjwebkrcbzsvpf.supabase.co',
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0a2trcGNqd2Via3JjYnpzdnBmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc1Mzg0NzMsImV4cCI6MjA5MzExNDQ3M30.YB10D0463cSJ1Nm_Y9etMwwfEzn28s0OiN_mnQW5IMc'
-        );
-
         // جسيمات
         (function(){
-            const c = document.getElementById('particlesBg');
-            const colors = ['#4CAF50','#81C784','#FFA726','#42A5F5','#66BB6A','#FFCC02'];
+            const c=document.getElementById('particlesBg');
+            const colors=['#4CAF50','#81C784','#FFA726','#42A5F5','#66BB6A','#FFCC02'];
             for(let i=0;i<30;i++){
-                const p = document.createElement('div');
-                p.className = 'particle';
-                const s = Math.random()*5+2;
-                p.style.cssText = `width:${s}px;height:${s}px;background:${colors[Math.floor(Math.random()*colors.length)]};left:${Math.random()*100}%;animation-duration:${Math.random()*10+8}s;animation-delay:${Math.random()*8}s;box-shadow:0 0 ${s*2}px currentColor;`;
+                const p=document.createElement('div');p.className='particle';
+                const s=Math.random()*5+2;
+                p.style.cssText=`width:${s}px;height:${s}px;background:${colors[Math.floor(Math.random()*colors.length)]};left:${Math.random()*100}%;animation-duration:${Math.random()*10+8}s;animation-delay:${Math.random()*8}s;box-shadow:0 0 ${s*2}px currentColor;`;
                 c.appendChild(p);
             }
         })();
 
-        const S = { photo: null, type: null, lat: null, lng: null };
+        const S={photo:null,type:null,lat:null,lng:null};
 
-        function takePicture() {
-            if(S.photo) return;
-            document.getElementById('cameraInput').click();
-        }
+        function takePicture(){if(!S.photo)document.getElementById('cameraInput').click();}
+        function openGallery(){if(!S.photo)document.getElementById('galleryInput').click();}
 
-        function openGallery() {
-            if(S.photo) return;
-            document.getElementById('galleryInput').click();
-        }
-
-        function handlePhoto(e) {
-            const f = e.target.files[0];
-            if(!f) return;
-            const r = new FileReader();
-            r.onload = ev => {
-                S.photo = ev.target.result;
-                document.getElementById('preview').src = S.photo;
-                document.getElementById('preview').style.display = 'block';
-                document.getElementById('camInner').style.display = 'none';
+        function handlePhoto(e){
+            const f=e.target.files[0];if(!f)return;
+            const r=new FileReader();
+            r.onload=ev=>{
+                S.photo=ev.target.result;
+                document.getElementById('preview').src=S.photo;
+                document.getElementById('preview').style.display='block';
+                document.getElementById('camInner').style.display='none';
                 document.getElementById('camZone').classList.add('filled');
-                document.getElementById('btnGallery').style.display = 'none';
-                document.getElementById('btnDelete').style.display = 'flex';
-                document.getElementById('t1').className = 'tag tag-ok';
-                document.getElementById('t1').textContent = '✓ تم';
+                document.getElementById('btnGallery').style.display='none';
+                document.getElementById('btnDelete').style.display='flex';
+                document.getElementById('t1').className='tag tag-ok';document.getElementById('t1').textContent='✓ تم';
                 document.getElementById('c1').classList.add('done');
-                const fl = document.getElementById('flash');
-                fl.classList.add('fire');
-                setTimeout(()=>fl.classList.remove('fire'),100);
+                document.getElementById('flash').classList.add('fire');
+                setTimeout(()=>document.getElementById('flash').classList.remove('fire'),100);
                 update();
             };
             r.readAsDataURL(f);
         }
 
-        function deletePhoto() {
-            S.photo = null;
-            document.getElementById('preview').style.display = 'none';
-            document.getElementById('camInner').style.display = 'block';
+        function deletePhoto(){
+            S.photo=null;
+            document.getElementById('preview').style.display='none';
+            document.getElementById('camInner').style.display='block';
             document.getElementById('camZone').classList.remove('filled');
-            document.getElementById('btnGallery').style.display = 'flex';
-            document.getElementById('btnDelete').style.display = 'none';
-            document.getElementById('cameraInput').value = '';
-            document.getElementById('galleryInput').value = '';
-            document.getElementById('t1').className = 'tag tag-req';
-            document.getElementById('t1').textContent = 'مطلوب';
-            document.getElementById('c1').classList.remove('done');
-            update();
+            document.getElementById('btnGallery').style.display='flex';
+            document.getElementById('btnDelete').style.display='none';
+            document.getElementById('cameraInput').value='';document.getElementById('galleryInput').value='';
+            document.getElementById('t1').className='tag tag-req';document.getElementById('t1').textContent='مطلوب';
+            document.getElementById('c1').classList.remove('done');update();
         }
 
-        function pickType(el, type) {
+        function pickType(el,type){
             document.querySelectorAll('.type-item').forEach(i=>i.classList.remove('selected'));
-            el.classList.add('selected');
-            S.type = type;
-            document.getElementById('t2').className = 'tag tag-ok';
-            document.getElementById('t2').textContent = '✓ تم';
-            document.getElementById('c2').classList.add('done');
-            update();
+            el.classList.add('selected');S.type=type;
+            document.getElementById('t2').className='tag tag-ok';document.getElementById('t2').textContent='✓ تم';
+            document.getElementById('c2').classList.add('done');update();
         }
 
-        function getLocation() {
-            if(S.lat && S.lng) return;
-            const mi = document.getElementById('mapInner');
-            
-            if(!navigator.geolocation) {
-                mi.innerHTML = '<span style="font-size:34px">⚠️</span><br><span style="font-weight:700;font-size:12px;">متصفحك لا يدعم GPS</span>';
-                return;
-            }
-
-            mi.innerHTML = '<span style="font-size:30px;">📡</span><br><span style="font-weight:700;font-size:12px;">جاري طلب الإذن...</span><span style="font-size:10px;color:#9e9e9e;">الرجاء الموافقة على تحديد الموقع</span>';
-            mi.style.cursor = 'wait';
-            mi.onclick = null;
-
+        function getLocation(){
+            if(S.lat&&S.lng)return;
+            const mi=document.getElementById('mapInner');
+            if(!navigator.geolocation){mi.innerHTML='<span style="font-size:34px">⚠️</span><br><span>GPS غير مدعوم</span>';return;}
+            mi.innerHTML='<span style="font-size:30px">📡</span><br><span style="font-weight:700">جاري طلب الإذن...</span>';
+            mi.style.cursor='wait';mi.onclick=null;
             navigator.geolocation.getCurrentPosition(
-                function(pos) {
-                    S.lat = pos.coords.latitude;
-                    S.lng = pos.coords.longitude;
-                    document.getElementById('vLat').textContent = S.lat.toFixed(6);
-                    document.getElementById('vLng').textContent = S.lng.toFixed(6);
+                pos=>{
+                    S.lat=pos.coords.latitude;S.lng=pos.coords.longitude;
+                    document.getElementById('vLat').textContent=S.lat.toFixed(6);
+                    document.getElementById('vLng').textContent=S.lng.toFixed(6);
                     document.getElementById('coords').classList.add('show');
                     document.getElementById('mapBox').classList.add('located');
-                    mi.innerHTML = '<span style="font-size:38px;">✅</span><br><span style="font-weight:700;color:#2E7D32;">تم تحديد الموقع بنجاح</span><span style="font-size:10px;color:#4CAF50;">الدقة: '+pos.coords.accuracy.toFixed(0)+' متر</span>';
-                    mi.style.background = 'linear-gradient(135deg, #E8F5E9, #C8E6C9)';
-                    mi.style.cursor = 'default';
-                    mi.onclick = null;
-                    document.getElementById('t3').className = 'tag tag-ok';
-                    document.getElementById('t3').textContent = '✓ تم';
-                    document.getElementById('c3').classList.add('done');
-                    update();
+                    mi.innerHTML='<span style="font-size:38px">✅</span><br><span style="font-weight:700;color:#2E7D32">تم تحديد الموقع</span>';
+                    mi.style.cursor='default';mi.onclick=null;
+                    document.getElementById('t3').className='tag tag-ok';document.getElementById('t3').textContent='✓ تم';
+                    document.getElementById('c3').classList.add('done');update();
                 },
-                function(err) {
-                    let msg = 'تعذر تحديد الموقع';
-                    if(err.code === 1) msg = 'تم رفض الإذن';
-                    else if(err.code === 2) msg = 'إشارة GPS ضعيفة';
-                    else if(err.code === 3) msg = 'انتهى الوقت';
-                    mi.innerHTML = '<span style="font-size:34px;">❌</span><br><span style="font-weight:700;font-size:12px;">'+msg+'</span><br><span style="font-size:10px;">اضغط للمحاولة مجدداً</span>';
-                    mi.style.background = 'linear-gradient(135deg, #FFEBEE, #FFCDD2)';
-                    mi.style.cursor = 'pointer';
-                    mi.onclick = getLocation;
+                err=>{
+                    mi.innerHTML='<span style="font-size:34px">❌</span><br><span>تعذر التحديد</span><br><span style="font-size:10px">اضغط للمحاولة</span>';
+                    mi.style.cursor='pointer';mi.onclick=getLocation;
                 },
-                { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }
+                {enableHighAccuracy:true,timeout:20000,maximumAge:0}
             );
         }
 
-        function update() {
-            let d = 0;
-            if(S.photo) d++; if(S.type) d++; if(S.lat && S.lng) d++;
-            
-            document.getElementById('pFill').style.width = Math.round((d/3)*100)+'%';
-            document.getElementById('pText').textContent = d+' من 3 خطوات';
-            
-            document.getElementById('s1').className = 'step-dot'+(S.photo?' done':' active');
-            document.getElementById('s2').className = 'step-dot'+(S.type?' done':(S.photo?' active':''));
-            document.getElementById('s3').className = 'step-dot'+((S.lat&&S.lng)?' done':(S.type?' active':''));
-            
-            const b = document.getElementById('btnSubmit');
-            if(d===3){ b.classList.add('ready'); b.disabled=false; }
-            else { b.classList.remove('ready'); b.disabled=true; }
+        function update(){
+            let d=0;if(S.photo)d++;if(S.type)d++;if(S.lat&&S.lng)d++;
+            document.getElementById('pFill').style.width=Math.round((d/3)*100)+'%';
+            document.getElementById('pText').textContent=d+' من 3 خطوات';
+            document.getElementById('s1').className='step-dot'+(S.photo?' done':' active');
+            document.getElementById('s2').className='step-dot'+(S.type?' done':(S.photo?' active':''));
+            document.getElementById('s3').className='step-dot'+((S.lat&&S.lng)?' done':(S.type?' active':''));
+            const b=document.getElementById('btnSubmit');
+            if(d===3){b.classList.add('ready');b.disabled=false;}else{b.classList.remove('ready');b.disabled=true;}
         }
 
-        async function send() {
-            const b = document.getElementById('btnSubmit');
-            b.innerHTML = '⏳ جاري الإرسال...';
-            b.classList.remove('ready');
-            b.disabled = true;
+        function send(){
+            const b=document.getElementById('btnSubmit');
+            b.innerHTML='⏳ جاري الإرسال...';b.classList.remove('ready');b.disabled=true;
             
-            // حفظ محلي دائماً (احتياط)
-            const reports = JSON.parse(localStorage.getItem('reports')||'[]');
-            reports.push({ photo: S.photo, type: S.type, lat: S.lat, lng: S.lng, time: new Date().toISOString(), status: 'new' });
-            localStorage.setItem('reports', JSON.stringify(reports));
-
-            // محاولة إرسال إلى Supabase
-            try {
-                const { error } = await supabase.from('reports').insert({
-                    photo_url: S.photo, type: S.type, lat: S.lat, lng: S.lng, status: 'new'
-                });
-                if(error) console.log('Supabase:', error.message);
-                else console.log('✅ تم الإرسال إلى Supabase');
-            } catch(err) {
-                console.log('Supabase غير متاح، تم الحفظ محلياً');
-            }
-
+            // حفظ محلي
+            const reports=JSON.parse(localStorage.getItem('reports')||'[]');
+            reports.push({photo:S.photo,type:S.type,lat:S.lat,lng:S.lng,time:new Date().toISOString(),status:'new'});
+            localStorage.setItem('reports',JSON.stringify(reports));
+            
             setTimeout(()=>{
                 document.getElementById('overlay').classList.add('show');
-                b.innerHTML = '🚀 إرسال البلاغ';
-            }, 700);
+                b.innerHTML='🚀 إرسال البلاغ';
+            },700);
         }
 
-        function resetAll() {
+        function resetAll(){
             document.getElementById('overlay').classList.remove('show');
-            deletePhoto();
-            S.type = null; S.lat = null; S.lng = null;
+            deletePhoto();S.type=null;S.lat=null;S.lng=null;
             document.querySelectorAll('.type-item').forEach(i=>i.classList.remove('selected'));
-            ['t2','t3'].forEach(id=>{ const el=document.getElementById(id); el.className='tag tag-req'; el.textContent='مطلوب'; });
+            ['t2','t3'].forEach(id=>{const el=document.getElementById(id);el.className='tag tag-req';el.textContent='مطلوب';});
             ['c2','c3'].forEach(id=>document.getElementById(id).classList.remove('done'));
             document.getElementById('coords').classList.remove('show');
-            document.getElementById('vLat').textContent = '--'; document.getElementById('vLng').textContent = '--';
+            document.getElementById('vLat').textContent='--';document.getElementById('vLng').textContent='--';
             document.getElementById('mapBox').classList.remove('located');
-            const mi = document.getElementById('mapInner');
-            mi.innerHTML = '<span class="map-emoji">📍</span><br><span style="font-weight:700;font-size:13px;color:#616161;">اضغط لتحديد موقعك</span><br><span style="font-size:10px;color:#9e9e9e;margin-top:2px;">سيظهر طلب الإذن تلقائياً</span>';
-            mi.style.background = 'linear-gradient(135deg, #E3F2FD, #F5F5F5)';
-            mi.style.cursor = 'pointer'; mi.onclick = getLocation;
-            update(); window.scrollTo({top:0, behavior:'smooth'});
+            const mi=document.getElementById('mapInner');
+            mi.innerHTML='<span class="map-emoji">📍</span><br><span style="font-weight:700;font-size:13px;color:#616161;">اضغط لتحديد موقعك</span><br><span style="font-size:10px;color:#9e9e9e;">سيظهر طلب الإذن تلقائياً</span>';
+            mi.style.cursor='pointer';mi.onclick=getLocation;
+            update();window.scrollTo({top:0,behavior:'smooth'});
         }
     </script>
 </body>
