@@ -234,6 +234,36 @@
         .legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
         .ld-report { background: #E53935; }
         .ld-pickup { background: #FF9800; }
+
+        /* شاشة تسجيل الدخول */
+        .login-screen {
+            position: relative; z-index: 1; flex: 1;
+            display: flex; align-items: center; justify-content: center;
+            padding: 78px 16px 20px;
+        }
+        .login-card {
+            background: rgba(255,255,255,0.94);
+            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            border-radius: var(--radius); padding: 36px 24px; text-align: center;
+            max-width: 380px; width: 100%;
+            box-shadow: var(--shadow-xl); border: 1px solid rgba(255,255,255,0.2);
+            animation: cardIn 0.5s ease;
+        }
+        .login-card input {
+            width: 100%; padding: 14px; border: 2px solid #e0e0e0;
+            border-radius: var(--radius-sm); text-align: center; font-size: 18px;
+            font-family: 'Cairo', sans-serif; margin-bottom: 12px; direction: ltr;
+            transition: var(--transition);
+        }
+        .login-card input:focus { outline: none; border-color: var(--primary); }
+        .login-btn {
+            width: 100%; padding: 14px; background: linear-gradient(135deg, #2E7D32, #4CAF50);
+            color: white; border: none; border-radius: var(--radius-sm);
+            font-size: 15px; font-weight: 700; cursor: pointer;
+            font-family: 'Cairo', sans-serif; transition: var(--transition);
+        }
+        .login-btn:hover { background: #1B5E20; transform: translateY(-2px); }
+        .login-error { color: var(--danger); font-size: 11px; margin-top: 8px; display: none; }
     </style>
 </head>
 <body>
@@ -249,7 +279,20 @@
         <button class="btn-refresh" onclick="loadAll()">🔄 تحديث</button>
     </header>
 
-    <main class="main-container">
+    <!-- شاشة تسجيل الدخول -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-card">
+            <div style="font-size:55px;margin-bottom:10px;">📊</div>
+            <h2 style="font-size:20px;font-weight:900;color:#2E7D32;margin-bottom:6px;">لوحة تحكم الإدارة</h2>
+            <p style="font-size:13px;color:#90A4AE;margin-bottom:18px;">دخول مخصص للمشرفين فقط</p>
+            <input type="password" id="adminPass" placeholder="كلمة المرور" onkeypress="if(event.key==='Enter')checkPass()">
+            <button class="login-btn" onclick="checkPass()">🔒 دخول</button>
+            <p class="login-error" id="loginError">كلمة المرور غير صحيحة</p>
+        </div>
+    </div>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="main-container" id="dashMain" style="display:none;">
         
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('overview', this)">📊 نظرة عامة</button>
@@ -282,6 +325,19 @@
             }
         })();
 
+        // ============ تسجيل الدخول ============
+        function checkPass() {
+            const pass = document.getElementById('adminPass').value;
+            if(pass === 'admin2026') {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashMain').style.display = 'block';
+                renderTab();
+                setTimeout(initMap, 500);
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+            }
+        }
+
         let currentTab = 'overview';
         let mainMap = null;
 
@@ -305,7 +361,6 @@
             setTimeout(() => btn.textContent = '🔄 تحديث', 800);
         }
 
-        // ============ تنسيق الوقت منظم ============
         function formatTime(isoString) {
             if(!isoString) return '—';
             const d = new Date(isoString);
@@ -328,7 +383,6 @@
             return names[mat] || mat || '—';
         }
 
-        // ============ خريطة Leaflet ============
         function initMap() {
             const reports = getReports();
             const sorting = getSortingRequests();
@@ -411,58 +465,22 @@
 
             return `
                 <div class="stats-grid">
-                    <div class="stat-card">
-                        <span class="stat-icon">📋</span>
-                        <div class="stat-value">${reports.length.toLocaleString('en-US')}</div>
-                        <div class="stat-label">بلاغ مفرغة</div>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-icon">📦</span>
-                        <div class="stat-value">${sorting.length.toLocaleString('en-US')}</div>
-                        <div class="stat-label">طلب جمع</div>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-icon">✅</span>
-                        <div class="stat-value">${completed.length.toLocaleString('en-US')}</div>
-                        <div class="stat-label">مهمة مكتملة</div>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-icon">🌱</span>
-                        <div class="stat-value">${co2Saved.toLocaleString('en-US')}</div>
-                        <div class="stat-label">كغ CO₂ وفر</div>
-                    </div>
+                    <div class="stat-card"><span class="stat-icon">📋</span><div class="stat-value">${reports.length.toLocaleString('en-US')}</div><div class="stat-label">بلاغ مفرغة</div></div>
+                    <div class="stat-card"><span class="stat-icon">📦</span><div class="stat-value">${sorting.length.toLocaleString('en-US')}</div><div class="stat-label">طلب جمع</div></div>
+                    <div class="stat-card"><span class="stat-icon">✅</span><div class="stat-value">${completed.length.toLocaleString('en-US')}</div><div class="stat-label">مهمة مكتملة</div></div>
+                    <div class="stat-card"><span class="stat-icon">🌱</span><div class="stat-value">${co2Saved.toLocaleString('en-US')}</div><div class="stat-label">كغ CO₂ وفر</div></div>
                 </div>
-
                 ${reports.length === 0 && sorting.length === 0 ? `
-                    <div class="highlight-box warning">
-                        <span style="font-size:20px;">ℹ️</span><br>
-                        <strong>لوحة التحكم جاهزة</strong><br>
-                        <span style="font-size:11px;color:var(--text-gray);">في انتظار أول بلاغ أو طلب جمع</span>
-                    </div>
+                    <div class="highlight-box warning"><span style="font-size:20px;">ℹ️</span><br><strong>لوحة التحكم جاهزة</strong><br><span style="font-size:11px;color:var(--text-gray);">في انتظار أول بلاغ أو طلب جمع</span></div>
                 ` : ''}
-
                 <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon ci-map">🗺️</div>
-                        <span class="card-label">خريطة تفاعلية — ${allPoints.length} نقطة</span>
-                        <span class="badge badge-warn">Live</span>
-                    </div>
+                    <div class="card-header"><div class="card-icon ci-map">🗺️</div><span class="card-label">خريطة تفاعلية — ${allPoints.length} نقطة</span><span class="badge badge-warn">Live</span></div>
                     <div id="mapContainer"></div>
-                    <div class="map-legend">
-                        <span><span class="legend-dot ld-report"></span> بلاغ مفرغة</span>
-                        <span><span class="legend-dot ld-pickup"></span> طلب جمع</span>
-                    </div>
+                    <div class="map-legend"><span><span class="legend-dot ld-report"></span> بلاغ مفرغة</span><span><span class="legend-dot ld-pickup"></span> طلب جمع</span></div>
                 </div>
-
                 <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon ci-co2">🌱</div>
-                        <span class="card-label">تتبع البصمة الكربونية</span>
-                    </div>
-                    <div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:11px;">
-                        <span>تم توفير ${co2Saved} كغ من CO₂</span>
-                        <span>الهدف: 1,000 كغ</span>
-                    </div>
+                    <div class="card-header"><div class="card-icon ci-co2">🌱</div><span class="card-label">تتبع البصمة الكربونية</span></div>
+                    <div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:11px;"><span>تم توفير ${co2Saved} كغ من CO₂</span><span>الهدف: 1,000 كغ</span></div>
                     <div class="co2-bar"><div class="co2-fill" style="width:${Math.min((co2Saved/1000)*100,100)}%"></div></div>
                     <div style="margin-top:10px;font-size:11px;color:var(--text-gray);text-align:center;">💡 بفضل تحسين مسارات الشاحنات والفرز الذكي</div>
                 </div>
@@ -476,31 +494,13 @@
             }
             return `
                 <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon ci-reports">📋</div>
-                        <span class="card-label">جميع بلاغات المفرغات</span>
-                        <span class="badge badge-new">${reports.length}</span>
-                    </div>
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr><th>#</th><th>النوع</th><th>الإحداثيات</th><th>الوقت</th><th>الحالة</th></tr>
-                            </thead>
-                            <tbody>
-                                ${reports.map((r,i) => {
-                                    const isDone = getCompletedTasks().includes('report_'+r.time);
-                                    return `
-                                    <tr>
-                                        <td>${i+1}</td>
-                                        <td>${getTypeName(r.type)}</td>
-                                        <td style="direction:ltr;font-size:10px;">${r.lat?.toFixed(4)||'--'}, ${r.lng?.toFixed(4)||'--'}</td>
-                                        <td style="direction:ltr;white-space:nowrap;font-size:10px;">${formatTime(r.time)}</td>
-                                        <td><span class="pill ${isDone?'pill-done':'pill-new'}">${isDone?'مكتمل':'جديد'}</span></td>
-                                    </tr>
-                                `;}).join('')}
-                            </tbody>
-                        </table>
-                    </div>
+                    <div class="card-header"><div class="card-icon ci-reports">📋</div><span class="card-label">جميع بلاغات المفرغات</span><span class="badge badge-new">${reports.length}</span></div>
+                    <div class="table-wrap"><table><thead><tr><th>#</th><th>النوع</th><th>الإحداثيات</th><th>الوقت</th><th>الحالة</th></tr></thead><tbody>
+                        ${reports.map((r,i) => {
+                            const isDone = getCompletedTasks().includes('report_'+r.time);
+                            return `<tr><td>${i+1}</td><td>${getTypeName(r.type)}</td><td style="direction:ltr;font-size:10px;">${r.lat?.toFixed(4)||'--'}, ${r.lng?.toFixed(4)||'--'}</td><td style="direction:ltr;white-space:nowrap;font-size:10px;">${formatTime(r.time)}</td><td><span class="pill ${isDone?'pill-done':'pill-new'}">${isDone?'مكتمل':'جديد'}</span></td></tr>`;
+                        }).join('')}
+                    </tbody></table></div>
                 </div>
             `;
         }
@@ -514,37 +514,14 @@
             const totalP = sorting.reduce((s,r)=>s+(r.points||0),0);
             return `
                 <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon ci-sorting">📦</div>
-                        <span class="card-label">طلبات جمع المواد</span>
-                        <span class="badge badge-warn">${sorting.length}</span>
-                    </div>
-                    <div style="display:flex;gap:16px;margin-bottom:12px;font-size:12px;font-weight:700;color:var(--primary-dark);">
-                        <span>⚖️ ${totalW} كغ</span>
-                        <span>⭐ ${totalP.toLocaleString('en-US')} نقطة</span>
-                    </div>
-                    <div class="table-wrap">
-                        <table>
-                            <thead>
-                                <tr><th>#</th><th>المادة</th><th>الوزن</th><th>النقاط</th><th>الموقع</th><th>الوقت</th><th>الحالة</th></tr>
-                            </thead>
-                            <tbody>
-                                ${sorting.map((r,i) => {
-                                    const isDone = getCompletedTasks().includes('sort_'+r.time);
-                                    return `
-                                    <tr>
-                                        <td>${i+1}</td>
-                                        <td>${getMaterialName(r.material)}</td>
-                                        <td style="direction:ltr;">${r.weight} كغ</td>
-                                        <td style="direction:ltr;color:var(--primary);">+${r.points}</td>
-                                        <td style="direction:ltr;font-size:10px;">${r.lat?.toFixed(4)||'--'}, ${r.lng?.toFixed(4)||'--'}</td>
-                                        <td style="direction:ltr;white-space:nowrap;font-size:10px;">${formatTime(r.time)}</td>
-                                        <td><span class="pill ${isDone?'pill-done':'pill-pending'}">${isDone?'مكتمل':'معلق'}</span></td>
-                                    </tr>
-                                `;}).join('')}
-                            </tbody>
-                        </table>
-                    </div>
+                    <div class="card-header"><div class="card-icon ci-sorting">📦</div><span class="card-label">طلبات جمع المواد</span><span class="badge badge-warn">${sorting.length}</span></div>
+                    <div style="display:flex;gap:16px;margin-bottom:12px;font-size:12px;font-weight:700;color:var(--primary-dark);"><span>⚖️ ${totalW} كغ</span><span>⭐ ${totalP.toLocaleString('en-US')} نقطة</span></div>
+                    <div class="table-wrap"><table><thead><tr><th>#</th><th>المادة</th><th>الوزن</th><th>النقاط</th><th>الموقع</th><th>الوقت</th><th>الحالة</th></tr></thead><tbody>
+                        ${sorting.map((r,i) => {
+                            const isDone = getCompletedTasks().includes('sort_'+r.time);
+                            return `<tr><td>${i+1}</td><td>${getMaterialName(r.material)}</td><td style="direction:ltr;">${r.weight} كغ</td><td style="direction:ltr;color:var(--primary);">+${r.points}</td><td style="direction:ltr;font-size:10px;">${r.lat?.toFixed(4)||'--'}, ${r.lng?.toFixed(4)||'--'}</td><td style="direction:ltr;white-space:nowrap;font-size:10px;">${formatTime(r.time)}</td><td><span class="pill ${isDone?'pill-done':'pill-pending'}">${isDone?'مكتمل':'معلق'}</span></td></tr>`;
+                        }).join('')}
+                    </tbody></table></div>
                 </div>
             `;
         }
@@ -557,22 +534,13 @@
             ];
             return `
                 <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon ci-trucks">🚛</div>
-                        <span class="card-label">أسطول الشاحنات</span>
-                        <span class="badge badge-ok">${trucks.length} شاحنة</span>
-                    </div>
+                    <div class="card-header"><div class="card-icon ci-trucks">🚛</div><span class="card-label">أسطول الشاحنات</span><span class="badge badge-ok">${trucks.length} شاحنة</span></div>
                     <div class="truck-list">
                         ${trucks.map(t => `
                             <div class="truck-item">
                                 <div class="truck-icon ${t.status==='free'?'truck-free':'truck-busy'}">🚛</div>
-                                <div class="truck-info">
-                                    <div class="truck-name">${t.driver}</div>
-                                    <div class="truck-plate">${t.plate} · 📍 ${t.lat}, ${t.lng}</div>
-                                </div>
-                                <span class="truck-status ${t.status==='free'?'status-free':'status-busy'}">
-                                    ${t.status==='free'?'🟢 متاح':'🟠 في مهمة'}
-                                </span>
+                                <div class="truck-info"><div class="truck-name">${t.driver}</div><div class="truck-plate">${t.plate} · 📍 ${t.lat}, ${t.lng}</div></div>
+                                <span class="truck-status ${t.status==='free'?'status-free':'status-busy'}">${t.status==='free'?'🟢 متاح':'🟠 في مهمة'}</span>
                             </div>
                         `).join('')}
                     </div>
@@ -589,9 +557,6 @@
                 case 'fleet': container.innerHTML = renderFleet(); break;
             }
         }
-
-        renderTab();
-        setTimeout(initMap, 500);
     </script>
 </body>
 </html>
