@@ -15,10 +15,9 @@
             --accent: #FF6F00; --accent-light: #FFA726;
             --danger: #E53935; --danger-light: #EF5350;
             --info: #1E88E5; --info-light: #42A5F5;
-            --teal: #009688; --teal-light: #26A69A;
-            --purple: #7B1FA2; --purple-light: #AB47BC;
+            --teal: #009688; --purple: #7B1FA2;
             --white: #FFFFFF; --text-gray: #90A4AE; --text-dark: #37474F;
-            --radius: 24px; --radius-sm: 14px; --radius-xs: 8px;
+            --radius: 24px; --radius-sm: 14px;
             --shadow-xl: 0 30px 80px rgba(0,0,0,0.25);
             --shadow-lg: 0 20px 60px rgba(0,0,0,0.2);
             --shadow: 0 4px 16px rgba(0,0,0,0.08);
@@ -79,24 +78,24 @@
         }
         .btn-back:hover { background: rgba(255,255,255,0.12); }
         .nav-title { flex: 1; font-size: 16px; font-weight: 700; color: white; }
-        .admin-badge {
-            font-size: 10px; padding: 5px 10px; border-radius: 12px;
-            background: rgba(255,255,255,0.1); color: white; font-weight: 600;
+        .btn-refresh {
+            font-size: 12px; padding: 7px 14px; border-radius: 18px;
+            border: 1.5px solid rgba(255,255,255,0.25); background: rgba(255,255,255,0.06);
+            color: white; cursor: pointer; font-family: 'Cairo', sans-serif;
+            font-weight: 600; transition: var(--transition); display: flex; align-items: center; gap: 5px;
         }
+        .btn-refresh:hover { background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.4); }
+        .btn-refresh:active { transform: scale(0.94); }
 
         .main-container {
             position: relative; z-index: 1; flex: 1;
             padding: 78px 16px 20px; max-width: 700px; margin: 0 auto; width: 100%;
         }
 
-        /* ============ إحصائيات ============ */
         .stats-grid {
-            display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
-            margin-bottom: 12px;
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 12px;
         }
-        @media (min-width: 500px) {
-            .stats-grid { grid-template-columns: repeat(4, 1fr); }
-        }
+        @media (min-width: 500px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
         .stat-card {
             background: rgba(255,255,255,0.94);
             backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
@@ -112,7 +111,6 @@
         }
         .stat-label { font-size: 10px; color: var(--text-gray); margin-top: 2px; font-weight: 600; }
 
-        /* ============ بطاقة ============ */
         .card {
             background: rgba(255,255,255,0.94);
             backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
@@ -127,8 +125,7 @@
             display: flex; align-items: center; justify-content: center; font-size: 17px;
         }
         .ci-reports { background: #FFEBEE; } .ci-trucks { background: #E3F2FD; }
-        .ci-co2 { background: #E0F2F1; } .ci-heat { background: #FFF3E0; }
-        .ci-sorting { background: #F3E5F5; }
+        .ci-co2 { background: #E0F2F1; } .ci-heat { background: #FFF3E0; } .ci-sorting { background: #F3E5F5; }
         .card-label { flex: 1; font-size: 14px; font-weight: 700; color: var(--text-dark); }
         .badge {
             font-size: 11px; padding: 4px 10px; border-radius: 12px; font-weight: 700;
@@ -137,63 +134,29 @@
         .badge-ok { background: #E8F5E9; color: var(--primary); }
         .badge-warn { background: #FFF3E0; color: var(--accent); }
 
-        /* ============ خريطة حرارية ============ */
+        /* خريطة حرارية */
         .heat-map {
-            width: 100%; height: 200px; border-radius: var(--radius-sm);
-            background: linear-gradient(135deg, #1a1a2e, #121828);
-            display: flex; align-items: center; justify-content: center;
-            flex-direction: column; gap: 6px; color: rgba(255,255,255,0.6);
-            position: relative; overflow: hidden;
+            width: 100%; height: 220px; border-radius: var(--radius-sm);
+            background: linear-gradient(135deg, #e8e8e8, #f5f5f5);
+            position: relative; overflow: hidden; border: 2px solid rgba(0,0,0,0.06);
         }
-        .heat-dot {
-            position: absolute; width: 12px; height: 12px; border-radius: 50%;
-            animation: heatPulse 2s ease-in-out infinite;
-        }
-        @keyframes heatPulse {
-            0%,100% { transform: scale(1); opacity: 0.7; }
-            50% { transform: scale(2.5); opacity: 0.2; }
+        .heat-point {
+            position: absolute; border-radius: 50%; transition: all 0.3s ease;
         }
         .heat-legend {
-            display: flex; gap: 12px; margin-top: 8px;
-            justify-content: center; font-size: 10px; color: var(--text-gray);
+            display: flex; gap: 14px; margin-top: 8px;
+            justify-content: center; font-size: 10px; color: var(--text-gray); font-weight: 600;
         }
-        .heat-legend span { display: flex; align-items: center; gap: 4px; }
-        .heat-dot-legend {
-            width: 8px; height: 8px; border-radius: 50%; display: inline-block;
-        }
-        .legend-high { background: var(--danger); }
-        .legend-med { background: var(--accent); }
-        .legend-low { background: var(--primary-light); }
+        .heat-legend span { display: flex; align-items: center; gap: 5px; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+        .ld-high { background: #E53935; }
+        .ld-med { background: #FF9800; }
+        .ld-low { background: #4CAF50; }
 
-        /* ============ أسطول ============ */
-        .truck-list { display: flex; flex-direction: column; gap: 8px; }
-        .truck-item {
-            display: flex; align-items: center; gap: 10px;
-            padding: 14px; border-radius: var(--radius-sm);
-            background: white; box-shadow: var(--shadow);
-            border: 1px solid rgba(0,0,0,0.04); transition: var(--transition);
-        }
-        .truck-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-        .truck-icon {
-            width: 40px; height: 40px; border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 20px; flex-shrink: 0;
-        }
-        .truck-available { background: #E8F5E9; }
-        .truck-busy { background: #FFF3E0; }
-        .truck-info { flex: 1; }
-        .truck-name { font-size: 13px; font-weight: 700; color: var(--text-dark); }
-        .truck-plate { font-size: 10px; color: var(--text-gray); direction: ltr; }
-        .truck-status {
-            font-size: 10px; padding: 3px 8px; border-radius: 8px; font-weight: 700;
-        }
-        .status-free { background: #E8F5E9; color: var(--primary); }
-        .status-on-mission { background: #FFF3E0; color: var(--accent); }
-
-        /* ============ جدول ============ */
-        .table-wrap { overflow-x: auto; }
+        /* جدول */
+        .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
         table {
-            width: 100%; border-collapse: collapse; min-width: 500px;
+            width: 100%; border-collapse: collapse; min-width: 520px;
         }
         th {
             text-align: right; padding: 10px 8px; font-size: 10px;
@@ -204,7 +167,7 @@
             padding: 10px 8px; font-size: 11px;
             border-bottom: 1px solid rgba(0,0,0,0.03); color: var(--text-dark);
         }
-        tr:hover td { background: rgba(0,0,0,0.01); }
+        tr:hover td { background: rgba(0,0,0,0.015); }
         .pill {
             display: inline-block; padding: 3px 8px; border-radius: 8px;
             font-size: 10px; font-weight: 700;
@@ -213,11 +176,11 @@
         .pill-done { background: #E8F5E9; color: var(--primary); }
         .pill-pending { background: #FFF3E0; color: var(--accent); }
 
-        .empty-state { text-align: center; padding: 24px; }
-        .empty-emoji { font-size: 40px; display: block; margin-bottom: 6px; }
+        .empty-state { text-align: center; padding: 28px 20px; }
+        .empty-emoji { font-size: 44px; display: block; margin-bottom: 8px; }
         .empty-text { font-size: 13px; color: var(--text-gray); font-weight: 600; }
 
-        /* ============ تبويبات ============ */
+        /* تبويبات */
         .tabs {
             display: flex; gap: 4px; background: rgba(255,255,255,0.08);
             border-radius: 20px; padding: 4px; margin-bottom: 12px;
@@ -244,9 +207,37 @@
             border-radius: 8px; overflow: hidden; margin-top: 8px;
         }
         .co2-fill {
-            height: 100%; background: linear-gradient(90deg, var(--danger), var(--accent), var(--primary-light));
+            height: 100%; background: linear-gradient(90deg, #E53935, #FF9800, #4CAF50);
             border-radius: 8px; transition: width 1s ease; width: 0%;
         }
+
+        .truck-list { display: flex; flex-direction: column; gap: 8px; }
+        .truck-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 14px; border-radius: var(--radius-sm);
+            background: white; box-shadow: var(--shadow);
+            border: 1px solid rgba(0,0,0,0.04); transition: var(--transition);
+        }
+        .truck-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+        .truck-icon {
+            width: 40px; height: 40px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; font-size: 20px;
+        }
+        .truck-free { background: #E8F5E9; } .truck-busy { background: #FFF3E0; }
+        .truck-info { flex: 1; }
+        .truck-name { font-size: 13px; font-weight: 700; color: var(--text-dark); }
+        .truck-plate { font-size: 10px; color: var(--text-gray); direction: ltr; }
+        .truck-status {
+            font-size: 10px; padding: 4px 10px; border-radius: 8px; font-weight: 700;
+        }
+        .status-free { background: #E8F5E9; color: var(--primary); }
+        .status-busy { background: #FFF3E0; color: var(--accent); }
+
+        .highlight-box {
+            background: #E8F5E9; padding: 12px 16px; border-radius: var(--radius-sm);
+            text-align: center; margin-bottom: 10px; border: 1px solid #C8E6C9;
+        }
+        .highlight-box.warning { background: #FFF3E0; border-color: #FFE0B2; }
     </style>
 </head>
 <body>
@@ -259,17 +250,17 @@
     <header class="top-nav">
         <a href="index.html" class="btn-back">←</a>
         <span class="nav-title">📊 لوحة تحكم الإدارة</span>
-        <span class="admin-badge">🔒 مشرف</span>
+        <button class="btn-refresh" onclick="loadAll()">🔄 تحديث</button>
     </header>
 
     <main class="main-container">
         
         <!-- تبويبات -->
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('overview')">📊 نظرة عامة</button>
-            <button class="tab-btn" onclick="switchTab('reports')">📋 البلاغات</button>
-            <button class="tab-btn" onclick="switchTab('sorting')">📦 طلبات الفرز</button>
-            <button class="tab-btn" onclick="switchTab('fleet')">🚛 الأسطول</button>
+            <button class="tab-btn active" onclick="switchTab('overview', this)">📊 نظرة عامة</button>
+            <button class="tab-btn" onclick="switchTab('reports', this)">📋 البلاغات</button>
+            <button class="tab-btn" onclick="switchTab('sorting', this)">📦 طلبات الفرز</button>
+            <button class="tab-btn" onclick="switchTab('fleet', this)">🚛 الأسطول</button>
         </div>
 
         <div id="tabContent"></div>
@@ -297,33 +288,102 @@
         function getReports() { return JSON.parse(localStorage.getItem('reports')||'[]'); }
         function getSortingRequests() { return JSON.parse(localStorage.getItem('sortingRequests')||'[]'); }
         function getCompletedTasks() { return JSON.parse(localStorage.getItem('completedTasks')||'[]'); }
-        function getTaskProofs() { return JSON.parse(localStorage.getItem('taskProofs')||'{}'); }
-        function getUserPoints() { return parseInt(localStorage.getItem('userPoints')||'0'); }
 
-        function switchTab(tab) {
+        function switchTab(tab, btn) {
             currentTab = tab;
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
+            if(btn) btn.classList.add('active');
             renderTab();
         }
 
-        function renderTab() {
-            const container = document.getElementById('tabContent');
-            switch(currentTab) {
-                case 'overview': container.innerHTML = renderOverview(); break;
-                case 'reports': container.innerHTML = renderReports(); break;
-                case 'sorting': container.innerHTML = renderSorting(); break;
-                case 'fleet': container.innerHTML = renderFleet(); break;
-            }
+        function loadAll() {
+            renderTab();
+            // تأثير visual feedback
+            const btn = document.querySelector('.btn-refresh');
+            btn.textContent = '✅ تم';
+            setTimeout(() => btn.textContent = '🔄 تحديث', 800);
         }
 
+        // ============ تنسيق الوقت بالجزائر ============
+        function formatTime(isoString) {
+            if(!isoString) return '—';
+            const d = new Date(isoString);
+            return d.toLocaleString('ar-DZ', {
+                year: 'numeric', month: '2-digit', day: '2-digit',
+                hour: '2-digit', minute: '2-digit', hour12: false
+            });
+        }
+
+        function getTypeName(type) {
+            const names = { menagere:'منزلية', plastique:'بلاستيك', carton:'كرتون', verre:'زجاج', decombres:'أنقاض', autre:'أخرى' };
+            return names[type] || type || '—';
+        }
+
+        function getMaterialName(mat) {
+            const names = { carton:'📦 كرتون', plastique:'🫙 بلاستيك', verre:'🫗 زجاج' };
+            return names[mat] || mat || '—';
+        }
+
+        // ============ خريطة حرارية ============
+        function buildHeatMap() {
+            const reports = getReports();
+            const sorting = getSortingRequests();
+            const allPoints = [...reports, ...sorting].filter(r => r.lat && r.lng);
+            
+            if(allPoints.length === 0) {
+                return '<div class="heat-map" style="display:flex;align-items:center;justify-content:center;color:var(--text-gray);font-weight:600;font-size:13px;">🗺️ لا توجد بيانات كافية — قم بإضافة بلاغات أو طلبات فرز أولاً</div>';
+            }
+
+            // تجميع النقاط حسب القرب
+            const zones = {};
+            allPoints.forEach(p => {
+                const key = p.lat.toFixed(3) + ',' + p.lng.toFixed(3);
+                if(!zones[key]) zones[key] = { count: 0, lat: p.lat, lng: p.lng };
+                zones[key].count++;
+            });
+
+            const zoneList = Object.values(zones);
+            const maxCount = Math.max(...zoneList.map(z => z.count));
+
+            let dotsHTML = zoneList.map(z => {
+                const intensity = z.count / maxCount;
+                let color, size;
+                if(intensity > 0.65) { color = '#E53935'; size = 22 + intensity * 16; }
+                else if(intensity > 0.3) { color = '#FF9800'; size = 14 + intensity * 14; }
+                else { color = '#4CAF50'; size = 8 + intensity * 12; }
+
+                const left = 5 + ((z.lng + 180) / 360) * 90;
+                const top = 5 + ((90 - z.lat) / 180) * 90;
+
+                return `<div class="heat-point" style="
+                    left:${left}%;top:${top}%;
+                    width:${size}px;height:${size}px;
+                    background:radial-gradient(circle, ${color}, transparent);
+                    opacity:0.7;animation:pulseHeat ${2+Math.random()*2}s ease-in-out infinite;
+                " title="${z.count} بلاغ/طلب"></div>`;
+            }).join('');
+
+            return `
+                <div class="heat-map" style="position:relative;">
+                    ${dotsHTML}
+                    <span style="position:absolute;bottom:8px;right:10px;font-size:10px;color:var(--text-gray);z-index:2;">${zoneList.length} نقطة تجمع</span>
+                </div>
+                <style>
+                    @keyframes pulseHeat {
+                        0%,100% { opacity: 0.55; transform: scale(1); }
+                        50% { opacity: 0.9; transform: scale(1.3); }
+                    }
+                </style>
+            `;
+        }
+
+        // ============ تبويب النظرة العامة ============
         function renderOverview() {
             const reports = getReports();
             const sorting = getSortingRequests();
             const completed = getCompletedTasks();
-            const points = getUserPoints();
             const totalWeight = sorting.reduce((s,r) => s + (r.weight||0), 0);
-            const co2Saved = Math.round(totalWeight * 0.5); // تقديري
+            const co2Saved = Math.round(totalWeight * 0.5);
 
             return `
                 <div class="stats-grid">
@@ -345,26 +405,31 @@
                     <div class="stat-card" style="animation-delay:0.2s">
                         <span class="stat-icon">🌱</span>
                         <div class="stat-value">${co2Saved.toLocaleString('en-US')}</div>
-                        <div class="stat-label">كغ CO₂ تم توفيره</div>
+                        <div class="stat-label">كغ CO₂ وفر</div>
                     </div>
                 </div>
 
-                <!-- خريطة حرارية -->
+                ${reports.length === 0 && sorting.length === 0 ? `
+                    <div class="highlight-box warning">
+                        <span style="font-size:20px;">ℹ️</span><br>
+                        <strong>لوحة التحكم جاهزة</strong><br>
+                        <span style="font-size:11px;color:var(--text-gray);">في انتظار أول بلاغ أو طلب جمع ليتم عرض البيانات</span>
+                    </div>
+                ` : ''}
+
                 <div class="card" style="animation-delay:0.25s">
                     <div class="card-header">
                         <div class="card-icon ci-heat">🗺️</div>
                         <span class="card-label">خريطة حرارية — المناطق الأكثر احتياجاً</span>
-                        <span class="badge badge-warn">Live</span>
                     </div>
-                    <div class="heat-map" id="heatMap"></div>
+                    ${buildHeatMap()}
                     <div class="heat-legend">
-                        <span><span class="heat-dot-legend legend-high"></span> كثافة عالية</span>
-                        <span><span class="heat-dot-legend legend-med"></span> متوسطة</span>
-                        <span><span class="heat-dot-legend legend-low"></span> منخفضة</span>
+                        <span><span class="legend-dot ld-high"></span> كثافة عالية</span>
+                        <span><span class="legend-dot ld-med"></span> متوسطة</span>
+                        <span><span class="legend-dot ld-low"></span> منخفضة</span>
                     </div>
                 </div>
 
-                <!-- البصمة الكربونية -->
                 <div class="card" style="animation-delay:0.3s">
                     <div class="card-header">
                         <div class="card-icon ci-co2">🌱</div>
@@ -372,16 +437,15 @@
                     </div>
                     <div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:11px;">
                         <span>تم توفير ${co2Saved} كغ من CO₂</span>
-                        <span>الهدف: 1000 كغ</span>
+                        <span>الهدف: 1,000 كغ</span>
                     </div>
                     <div class="co2-bar"><div class="co2-fill" style="width:${Math.min((co2Saved/1000)*100,100)}%"></div></div>
-                    <div style="margin-top:10px;font-size:11px;color:var(--text-gray);text-align:center;">
-                        💡 بفضل تحسين مسارات الشاحنات والفرز الذكي
-                    </div>
+                    <div style="margin-top:10px;font-size:11px;color:var(--text-gray);text-align:center;">💡 بفضل تحسين مسارات الشاحنات والفرز الذكي</div>
                 </div>
             `;
         }
 
+        // ============ تبويب البلاغات ============
         function renderReports() {
             const reports = getReports();
             if(reports.length === 0) {
@@ -407,7 +471,7 @@
                                         <td>${i+1}</td>
                                         <td>${getTypeName(r.type)}</td>
                                         <td style="direction:ltr;font-size:10px;">${r.lat?.toFixed(4)||'--'}, ${r.lng?.toFixed(4)||'--'}</td>
-                                        <td>${new Date(r.time).toLocaleString('ar-EG')}</td>
+                                        <td style="direction:ltr;white-space:nowrap;">${formatTime(r.time)}</td>
                                         <td><span class="pill ${isDone?'pill-done':'pill-new'}">${isDone?'مكتمل':'جديد'}</span></td>
                                     </tr>
                                 `;}).join('')}
@@ -418,6 +482,7 @@
             `;
         }
 
+        // ============ تبويب طلبات الفرز ============
         function renderSorting() {
             const sorting = getSortingRequests();
             if(sorting.length === 0) {
@@ -439,7 +504,7 @@
                     <div class="table-wrap">
                         <table>
                             <thead>
-                                <tr><th>#</th><th>المادة</th><th>الوزن</th><th>النقاط</th><th>الموقع</th><th>الحالة</th></tr>
+                                <tr><th>#</th><th>المادة</th><th>الوزن</th><th>النقاط</th><th>الموقع</th><th>الوقت</th><th>الحالة</th></tr>
                             </thead>
                             <tbody>
                                 ${sorting.map((r,i) => {
@@ -451,6 +516,7 @@
                                         <td style="direction:ltr;">${r.weight} كغ</td>
                                         <td style="direction:ltr;color:var(--primary);">+${r.points}</td>
                                         <td style="direction:ltr;font-size:10px;">${r.lat?.toFixed(4)||'--'}, ${r.lng?.toFixed(4)||'--'}</td>
+                                        <td style="direction:ltr;white-space:nowrap;">${formatTime(r.time)}</td>
                                         <td><span class="pill ${isDone?'pill-done':'pill-pending'}">${isDone?'مكتمل':'معلق'}</span></td>
                                     </tr>
                                 `;}).join('')}
@@ -461,6 +527,7 @@
             `;
         }
 
+        // ============ تبويب الأسطول ============
         function renderFleet() {
             const trucks = [
                 { id:1, driver:'كريم حداد', plate:'12345-16-01', status:'free', lat:36.7538, lng:3.0588 },
@@ -477,12 +544,12 @@
                     <div class="truck-list">
                         ${trucks.map(t => `
                             <div class="truck-item">
-                                <div class="truck-icon ${t.status==='free'?'truck-available':'truck-busy'}">🚛</div>
+                                <div class="truck-icon ${t.status==='free'?'truck-free':'truck-busy'}">🚛</div>
                                 <div class="truck-info">
                                     <div class="truck-name">${t.driver}</div>
-                                    <div class="truck-plate">${t.plate} · 📍 ${t.lat.toFixed(4)}, ${t.lng.toFixed(4)}</div>
+                                    <div class="truck-plate">${t.plate} · 📍 ${t.lat}, ${t.lng}</div>
                                 </div>
-                                <span class="truck-status ${t.status==='free'?'status-free':'status-on-mission'}">
+                                <span class="truck-status ${t.status==='free'?'status-free':'status-busy'}">
                                     ${t.status==='free'?'🟢 متاح':'🟠 في مهمة'}
                                 </span>
                             </div>
@@ -492,49 +559,18 @@
             `;
         }
 
-        function getTypeName(type) {
-            const names = { menagere:'منزلية', plastique:'بلاستيك', carton:'كرتون', verre:'زجاج', decombres:'أنقاض', autre:'أخرى' };
-            return names[type] || type || '—';
-        }
-
-        function getMaterialName(mat) {
-            const names = { carton:'📦 كرتون', plastique:'🫙 بلاستيك', verre:'🫗 زجاج' };
-            return names[mat] || mat || '—';
-        }
-
-        // ============ خريطة حرارية ============
-        function initHeatMap() {
-            const map = document.getElementById('heatMap');
-            if(!map) return;
-            const reports = getReports();
-            const sorting = getSortingRequests();
-            const allPoints = [...reports, ...sorting].filter(r => r.lat && r.lng);
-            
-            if(allPoints.length === 0) {
-                map.innerHTML = '<span style="font-size:14px;">لا توجد بيانات كافية للخريطة الحرارية</span>';
-                return;
+        function renderTab() {
+            const container = document.getElementById('tabContent');
+            switch(currentTab) {
+                case 'overview': container.innerHTML = renderOverview(); break;
+                case 'reports': container.innerHTML = renderReports(); break;
+                case 'sorting': container.innerHTML = renderSorting(); break;
+                case 'fleet': container.innerHTML = renderFleet(); break;
             }
-
-            // نقاط وهمية على الخريطة
-            const colors = ['#E53935','#FF9800','#FF9800','#4CAF50','#4CAF50','#4CAF50'];
-            map.innerHTML = allPoints.slice(0, 20).map((p,i) => {
-                const left = 10 + Math.random() * 80;
-                const top = 10 + Math.random() * 80;
-                const color = colors[Math.floor(Math.random()*colors.length)];
-                const delay = Math.random() * 2;
-                return `<div class="heat-dot" style="left:${left}%;top:${top}%;background:${color};animation-delay:${delay}s;width:${8+Math.random()*16}px;height:${8+Math.random()*16}px;"></div>`;
-            }).join('') + '<span style="position:relative;z-index:1;font-size:13px;">🗺️ خريطة حرارية تفاعلية</span>';
         }
 
-        // ============ انطلاق ============
-        function init() {
-            renderTab();
-            setTimeout(initHeatMap, 500);
-            setInterval(() => { renderTab(); if(currentTab==='overview') setTimeout(initHeatMap,300); }, 8000);
-        }
-
-        window.switchTab = switchTab;
-        init();
+        // ============ بدء ============
+        renderTab();
     </script>
 </body>
 </html>
