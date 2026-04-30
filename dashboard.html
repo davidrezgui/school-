@@ -9,7 +9,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
     <style>
@@ -137,17 +136,15 @@
         .badge-ok { background: #E8F5E9; color: var(--primary); }
         .badge-warn { background: #FFF3E0; color: var(--accent); }
 
-        /* ============ خريطة Leaflet ============ */
         #mapContainer {
             width: 100%; height: 300px; border-radius: var(--radius-sm);
             overflow: hidden; border: 2px solid rgba(0,0,0,0.06); z-index: 1;
         }
         #mapContainer .leaflet-control-attribution { font-size: 8px; }
 
-        /* جدول */
         .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
         table {
-            width: 100%; border-collapse: collapse; min-width: 520px;
+            width: 100%; border-collapse: collapse; min-width: 550px;
         }
         th {
             text-align: right; padding: 10px 8px; font-size: 10px;
@@ -237,7 +234,6 @@
         .legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
         .ld-report { background: #E53935; }
         .ld-pickup { background: #FF9800; }
-        .ld-truck { background: #1E88E5; }
     </style>
 </head>
 <body>
@@ -266,9 +262,10 @@
 
     </main>
 
-    <footer class="footer">© 2026 مدينتنا نظيفة — جميع الحقوق محفوظة | وزارة البيئة والطاقات المتجددة</footer>
+    <footer class="footer">
+        © 2026 مدينتنا نظيفة — جميع الحقوق محفوظة | وزارة البيئة والطاقات المتجددة
+    </footer>
 
-    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
@@ -297,24 +294,28 @@
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             if(btn) btn.classList.add('active');
             renderTab();
-            if(tab === 'overview') setTimeout(initMap, 300);
+            if(tab === 'overview') setTimeout(initMap, 400);
         }
 
         function loadAll() {
             renderTab();
-            if(currentTab === 'overview') setTimeout(initMap, 300);
+            if(currentTab === 'overview') setTimeout(initMap, 400);
             const btn = document.querySelector('.btn-refresh');
             btn.textContent = '✅ تم';
             setTimeout(() => btn.textContent = '🔄 تحديث', 800);
         }
 
+        // ============ تنسيق الوقت منظم ============
         function formatTime(isoString) {
             if(!isoString) return '—';
             const d = new Date(isoString);
-            return d.toLocaleString('ar-DZ', {
-                year: 'numeric', month: '2-digit', day: '2-digit',
-                hour: '2-digit', minute: '2-digit', hour12: false
-            });
+            const hh = d.getHours().toString().padStart(2, '0');
+            const mm = d.getMinutes().toString().padStart(2, '0');
+            const ss = d.getSeconds().toString().padStart(2, '0');
+            const dd = d.getDate().toString().padStart(2, '0');
+            const MM = (d.getMonth() + 1).toString().padStart(2, '0');
+            const yyyy = d.getFullYear();
+            return hh + ':' + mm + ':' + ss + ' · ' + dd + '/' + MM + '/' + yyyy;
         }
 
         function getTypeName(type) {
@@ -327,48 +328,39 @@
             return names[mat] || mat || '—';
         }
 
-        // ============ خريطة Leaflet حقيقية ============
+        // ============ خريطة Leaflet ============
         function initMap() {
             const reports = getReports();
             const sorting = getSortingRequests();
             const allPoints = [...reports, ...sorting].filter(r => r.lat && r.lng);
 
-            // إتلاف الخريطة القديمة
             if(mainMap) { mainMap.remove(); mainMap = null; }
             
             const mapEl = document.getElementById('mapContainer');
             if(!mapEl) return;
 
-            // مركز الخريطة: برج بوعريريج
             const centerLat = allPoints.length > 0 ? allPoints[0].lat : 36.0736;
             const centerLng = allPoints.length > 0 ? allPoints[0].lng : 4.7631;
 
             mainMap = L.map('mapContainer').setView([centerLat, centerLng], 13);
 
-            // طبقة OpenStreetMap
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© OpenStreetMap | مدينتنا نظيفة',
                 maxZoom: 19,
             }).addTo(mainMap);
 
-            // أيقونات مخصصة
             const reportIcon = L.divIcon({
                 className: 'custom-marker',
                 html: '<div style="background:#E53935;width:28px;height:28px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(229,57,53,0.5);border:2px solid white;"><span style="transform:rotate(45deg);font-size:14px;">🗑️</span></div>',
-                iconSize: [28, 28],
-                iconAnchor: [14, 28],
-                popupAnchor: [0, -30]
+                iconSize: [28, 28], iconAnchor: [14, 28], popupAnchor: [0, -30]
             });
 
             const pickupIcon = L.divIcon({
                 className: 'custom-marker',
                 html: '<div style="background:#FF9800;width:28px;height:28px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(255,152,0,0.5);border:2px solid white;"><span style="transform:rotate(45deg);font-size:14px;">📦</span></div>',
-                iconSize: [28, 28],
-                iconAnchor: [14, 28],
-                popupAnchor: [0, -30]
+                iconSize: [28, 28], iconAnchor: [14, 28], popupAnchor: [0, -30]
             });
 
-            // إضافة البلاغات
             reports.forEach(r => {
                 if(r.lat && r.lng) {
                     const isDone = getCompletedTasks().includes('report_'+r.time);
@@ -384,7 +376,6 @@
                 }
             });
 
-            // إضافة طلبات الجمع
             sorting.forEach(r => {
                 if(r.lat && r.lng) {
                     const isDone = getCompletedTasks().includes('sort_'+r.time);
@@ -401,18 +392,15 @@
                 }
             });
 
-            // إذا لا توجد نقاط، إظهار برج بوعريريج
             if(allPoints.length === 0) {
                 L.marker([36.0736, 4.7631]).addTo(mainMap)
                     .bindPopup('<div style="font-family:Cairo,sans-serif;text-align:right;"><strong>📍 ولاية برج بوعريريج</strong><br><span style="font-size:11px;">لا توجد بلاغات بعد</span></div>')
                     .openPopup();
             }
 
-            // تأخير لإصلاح مشكلة العرض
             setTimeout(() => { if(mainMap) mainMap.invalidateSize(); }, 200);
         }
 
-        // ============ تبويب النظرة العامة ============
         function renderOverview() {
             const reports = getReports();
             const sorting = getSortingRequests();
@@ -423,22 +411,22 @@
 
             return `
                 <div class="stats-grid">
-                    <div class="stat-card" style="animation-delay:0.05s">
+                    <div class="stat-card">
                         <span class="stat-icon">📋</span>
                         <div class="stat-value">${reports.length.toLocaleString('en-US')}</div>
                         <div class="stat-label">بلاغ مفرغة</div>
                     </div>
-                    <div class="stat-card" style="animation-delay:0.1s">
+                    <div class="stat-card">
                         <span class="stat-icon">📦</span>
                         <div class="stat-value">${sorting.length.toLocaleString('en-US')}</div>
                         <div class="stat-label">طلب جمع</div>
                     </div>
-                    <div class="stat-card" style="animation-delay:0.15s">
+                    <div class="stat-card">
                         <span class="stat-icon">✅</span>
                         <div class="stat-value">${completed.length.toLocaleString('en-US')}</div>
                         <div class="stat-label">مهمة مكتملة</div>
                     </div>
-                    <div class="stat-card" style="animation-delay:0.2s">
+                    <div class="stat-card">
                         <span class="stat-icon">🌱</span>
                         <div class="stat-value">${co2Saved.toLocaleString('en-US')}</div>
                         <div class="stat-label">كغ CO₂ وفر</div>
@@ -449,11 +437,11 @@
                     <div class="highlight-box warning">
                         <span style="font-size:20px;">ℹ️</span><br>
                         <strong>لوحة التحكم جاهزة</strong><br>
-                        <span style="font-size:11px;color:var(--text-gray);">في انتظار أول بلاغ أو طلب جمع ليتم عرض البيانات على الخريطة</span>
+                        <span style="font-size:11px;color:var(--text-gray);">في انتظار أول بلاغ أو طلب جمع</span>
                     </div>
                 ` : ''}
 
-                <div class="card" style="animation-delay:0.25s">
+                <div class="card">
                     <div class="card-header">
                         <div class="card-icon ci-map">🗺️</div>
                         <span class="card-label">خريطة تفاعلية — ${allPoints.length} نقطة</span>
@@ -466,7 +454,7 @@
                     </div>
                 </div>
 
-                <div class="card" style="animation-delay:0.3s">
+                <div class="card">
                     <div class="card-header">
                         <div class="card-icon ci-co2">🌱</div>
                         <span class="card-label">تتبع البصمة الكربونية</span>
@@ -506,7 +494,7 @@
                                         <td>${i+1}</td>
                                         <td>${getTypeName(r.type)}</td>
                                         <td style="direction:ltr;font-size:10px;">${r.lat?.toFixed(4)||'--'}, ${r.lng?.toFixed(4)||'--'}</td>
-                                        <td style="direction:ltr;white-space:nowrap;">${formatTime(r.time)}</td>
+                                        <td style="direction:ltr;white-space:nowrap;font-size:10px;">${formatTime(r.time)}</td>
                                         <td><span class="pill ${isDone?'pill-done':'pill-new'}">${isDone?'مكتمل':'جديد'}</span></td>
                                     </tr>
                                 `;}).join('')}
@@ -550,7 +538,7 @@
                                         <td style="direction:ltr;">${r.weight} كغ</td>
                                         <td style="direction:ltr;color:var(--primary);">+${r.points}</td>
                                         <td style="direction:ltr;font-size:10px;">${r.lat?.toFixed(4)||'--'}, ${r.lng?.toFixed(4)||'--'}</td>
-                                        <td style="direction:ltr;white-space:nowrap;">${formatTime(r.time)}</td>
+                                        <td style="direction:ltr;white-space:nowrap;font-size:10px;">${formatTime(r.time)}</td>
                                         <td><span class="pill ${isDone?'pill-done':'pill-pending'}">${isDone?'مكتمل':'معلق'}</span></td>
                                     </tr>
                                 `;}).join('')}
